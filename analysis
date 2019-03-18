@@ -1,0 +1,66 @@
+1-a)
+I can use comparison based algorithms like heapsort or mergesort because in the worst case they can be done in O(n log n) time.
+ We have to get the k’th largest element so  we go over rom 0 to k-1 which is Θ(k). Since O(nlog n) + Θ(k) = O(nlog n)
+
+1-b) 
+For finding k-th largest element in set I will use algorithm which is the worst case linear time order statistics algorithm.   Then with using ‘Select’ to find k-th largest item in a Θ(n), finding the partition then sorting the k largest numbers take Θ(klogk). So algorithm is taking time about Θ(n + klogk).
+
+Discussion
+It is obvious that k<n, so comparing the two function in part a and b ( O(nlog n) and Θ(n + klogk) ) as n goes to infinity is: 
+   lim┬(n→∞)⁡〖(nlogn)/(n+klogk)〗=∞
+So I choose for very large n Θ(n + klogk).
+
+
+
+
+
+2-a) 
+MSD Radix Sort
+Most-significant-digit first (from left to right) idea. Partition array into R pieces according to first character recursively sort each subarrays. (#Also I commented the parts in code what I did in sorting for strings.) First I will create 26 buckets for each uppercase letter. From 64(A) to 90(Z) then for the strings that in my array if they are not sorted yet I will add them to done_bucket else I will recursively call the function to order them. Other modification is taking the char’s ASCII value in python with ord function. In
+2-b)
+def radix_sort_MSD_for_strings (array, i):
+
+    # base case 
+    if len(array) <= 1:
+        return array
+
+    # divide (first by length, then by order of the first character)
+    done_bucket = []
+    buckets = [ [] for x in range(64,100) ] # ASCII TABLE A-Z is from 64 to 90
+#creating buckets for every uppercase letter
+    for s in array:
+        if i >= len(s):
+            done_bucket.append(s)
+        else:
+            buckets[ ord(s[i]) - ord('a') ].append(s)#ord function takes the ascii value
+    buckets = [ radix_sort_MSD_for_strings (b, i + 1) for b in buckets]  #recursive part counts the number of buckets and in that bucket it recursively sorts the      #items in that bucket
+    return done_bucket + [ b for blist in buckets for b in blist ]
+def main():
+array_of_strings = ['VEYSEL','EGE','YASIN', 'SELIN']       
+# ASCII TABLE A-Z is from 64 to 90 if you want to    
+#change it  to lowercase letter Also change the bucket list's range                
+                                                         
+    	print('before radix_sort:')
+    	print (array_of_strings)
+    	array_of_strings = radix_sort_MSD_for_strings (array_of_strings, 0)
+    	print('after radix_sort')
+    	print (array_of_strings)
+main()
+
+ 
+Result
+
+Steps:
+1ST STEP: EGE SELIN YASIN VEYSEL
+2ND STEP: EGE VEYSEL SELIN YASIN
+3RD STEP: EGE SELIN YASIN VEYSEL
+4TH STEP: EGE SELIN YASIN VEYSEL
+5TH STEP: YASIN SELIN VEYSEL EGE
+6TH STEP: EGE SELIN VEYSEL YASIN
+
+2-c)
+In MSD radix sort it has to spend N operations per every string and putting them in bucket  and W is the number of chars. So the time is in total Θ(NW). MSD between N and NW (if W is not very large assuming that it will sort in linear time  Θ(N) so it is between N-NW)
+
+
+
+		                                         
